@@ -13,6 +13,7 @@ import datetime
 #Return
 #	boolean: Returns true if server is shutdown. Return false if error occured
 def serverShutdown():
+	ret = False
 	if autoit.win_exists("C:\Windows\system32\cmd.exe"):	#Checks if the window Minecraft would be in is currently running
 		print("The Minecraft server was found and will be shut down in 30 seconds.")
 		#Note: The following command brings the Minecraft command prompt to the front.
@@ -46,13 +47,14 @@ def serverShutdown():
 		#Log to console whether server is stopped
 		if autoit.win_exists("C:\Windows\system32\cmd.exe") == False:
 			print("The Minecraft server was successfully shutdown!")
-			return True
+			ret = True
 		else:
 			print("Error: The stop command was sent but the server is still found!")
-			return False
+			ret = False
 	else:	#Minecraft instance was not found
 		print("The server was not found.")
-		return True		#Return true because this function only needs to make sure the server is off
+		ret = True		#Return true because this function only needs to make sure the server is off
+	return ret
 	
 #This function simply copies a folder from one place to another.
 #Parameters
@@ -63,13 +65,14 @@ def serverShutdown():
 def copyDirectory(src, dest):
 	try:
 		shutil.copytree(src, dest)
-		return True
+		ret = True
 	except shutil.Error as e:    # Directories are the same
 		print('Directory not copied. Error: %s' % e)
-		return False
+		ret = False
 	except OSError as e:    # Any error saying that the directory doesn't exist
 		print('Directory not copied. Error: %s' % e)
-		return False
+		ret = False
+	return ret
 
 #This function will create the name for the backup with the format:
 #	worldBackupyymmdd_hhmi		
