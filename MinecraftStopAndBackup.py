@@ -1,11 +1,10 @@
 #Title: Minecraft Server Shutdown and Backup Automation
 #Created by: Chris Tudehope
 #Description: This program automates the operation of shutting down and backing up a
-#Minecraft server. 
+#Minecraft server by copying the world folder. 
 import autoit
 import time
-import shutil
-import datetime
+from Backup import backupServer
 
 #This function will check if a Minecraft server is running. If so it will send a countdown
 #to any players on the server and then shut the server down. The function uses autoit to 
@@ -55,40 +54,14 @@ def serverShutdown():
 		print("The server was not found.")
 		ret = True		#Return true because this function only needs to make sure the server is off
 	return ret
-	
-#This function simply copies a folder from one place to another.
-#Parameters
-#	src: Path of the folder to be copied
-#	dest: Location the folder will be copied to. Folder will be renamed as what dest points to.
-#Return
-#	boolean: Returns true if successful and false if error occurred.
-def copyDirectory(src, dest):
-	try:
-		shutil.copytree(src, dest)
-		ret = True
-	except shutil.Error as e:    # Directories are the same
-		print('Directory not copied. Error: %s' % e)
-		ret = False
-	except OSError as e:    # Any error saying that the directory doesn't exist
-		print('Directory not copied. Error: %s' % e)
-		ret = False
-	return ret
 
-#This function will create the name for the backup with the format:
-#	worldBackupyymmdd_hhmi		
-#Return
-#	string: Returns the created backup name
-def createBackupName():
-	now = datetime.datetime.now()
-	str ="worldBackup" + now.strftime("%y%m%d_%H%M")
-	return str	
 
 #Start of program
 if serverShutdown() == True:	#Check if server was shut down
 	backupSrc = "E:\\ServerForThePlex\\world"	
-	backupDest = "C:\\MinecraftBackups\\" + createBackupName()
+	backupDest = "C:\\MinecraftBackups\\"
 	print("Minecraft Backup is in Progress. It takes awhile :(")
-	if copyDirectory(backupSrc,backupDest) == True:	#Check if backup occurred
+	if backupServer(backupSrc,backupDest,15) == True:	#Check if backup occurred
 		print("A backup was created in the folder: " + backupDest)
 		#Give the user time to see final console output
 		time.sleep(5)

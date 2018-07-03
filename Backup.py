@@ -1,13 +1,16 @@
+#Title: Folder Backup Automation
+#Created by: Chris Tudehope
+#Description: This is a module intended to be used to backup the world folder of a minecraft
+#server. The entry point of this module is backupServer()
 import shutil
 import datetime
 import os
 import re
  
- 
 #This function is the entry point for backing up a Minecraft server.
 #Paramaters
-#	minecraftWorldLocation: Path of the folder to where the Minecraft server's world folder is contained.
-#	backupFolder: Location where the backup will be placed within. The backup will be placed within this folder.
+#	minecraftWorldLocation: Location of the world folder of the Minecraft server
+#	backupFolder: The backup will be placed within this folder.
 #Return
 #	boolean: Returnes if the backup was successful
 def backupServer(minecraftWorldLocation, backupFolder, maxBackupNumber):
@@ -74,8 +77,4 @@ def manageBackupFolder(backupFolder, maxBackupNumber):
 				print("The backup " + deletedBackup + " was deleted to make room for new backup!")
 		except:
 			print("Error: Deleting an old backup failed!")
-	
-		
-		
-backupServer("/Users/christudehope/Desktop/testFolder", "/Users/christudehope/Desktop/testBackupFolder/", 10)
 	
