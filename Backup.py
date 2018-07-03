@@ -11,8 +11,11 @@ import re
 #Return
 #	boolean: Returnes if the backup was successful
 def backupServer(minecraftWorldLocation, backupFolder, maxBackupNumber):
-	manageBackupFolder(backupFolder, maxBackupNumber)
-	return copyDirectory(minecraftWorldLocation, backupFolder + createBackupName())
+	backupSuccess = copyDirectory(minecraftWorldLocation, backupFolder + createBackupName())
+	if backupSuccess:
+		manageBackupFolder(backupFolder, maxBackupNumber)
+	return backupSuccess
+		
 
 #This function simply copies a folder from one place to another.
 #Parameters
@@ -30,6 +33,7 @@ def copyDirectory(src, dest):
 	except OSError as e:    # Any error saying that the directory doesn't exist
 		print("Directory not copied. Error: %s" % e)
 		ret = False
+	return ret
 
 #This function will create the name for the backup with the format:
 #	worldBackupyymmdd_hhmi		
@@ -41,7 +45,7 @@ def createBackupName():
 	return str
 	
 #This function counts the number of backups in the backupFolder and figure outs if any
-#need to be deleted. Intended to be called before backup.
+#need to be deleted.
 #Parameters
 #	backupFolder: Location where the backup will be placed within.
 #	maxBackupNumber: Max number of backups that are allowed in the backup folder
@@ -60,13 +64,11 @@ def manageBackupFolder(backupFolder, maxBackupNumber):
 					releventFileList.append(dir)
 			break
 	
-	if len(releventFileList) >= maxBackupNumber:
+	if len(releventFileList) > maxBackupNumber:
 		#By sorting it in reverse the oldest backups will be at the back of the list
 		releventFileList = sorted(releventFileList,reverse=True)
-		#need to end up with maxBackupNumber - 1 so that when the backup is done the 
-		#backup count will equal maxBackupNumber
 		try:
-			while len(releventFileList) >= maxBackupNumber:
+			while len(releventFileList) > maxBackupNumber:
 				deletedBackup = releventFileList.pop(-1)
 				shutil.rmtree(backupFolder + deletedBackup)
 				print("The backup " + deletedBackup + " was deleted to make room for new backup!")
@@ -75,5 +77,5 @@ def manageBackupFolder(backupFolder, maxBackupNumber):
 	
 		
 		
-backupServer("/Users/christudehope/Desktop/testFolder", "/Users/christudehope/Desktop/testBackupFolder/", 5)
+backupServer("/Users/christudehope/Desktop/testFolder", "/Users/christudehope/Desktop/testBackupFolder/", 10)
 	
