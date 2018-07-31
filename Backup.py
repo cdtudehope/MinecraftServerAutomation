@@ -39,12 +39,12 @@ def copyDirectory(src, dest):
 	return ret
 
 #This function will create the name for the backup with the format:
-#	worldBackupyymmdd_hhmi		
+#	world_backup_yymmdd_hhmi		
 #Return
 #	string: Returns the created backup name
 def createBackupName():
 	now = datetime.datetime.now()
-	str ="worldBackup" + now.strftime("%y%m%d_%H%M")
+	str ="world_backup_" + now.strftime("%y%m%d_%H%M")
 	return str
 	
 #This function counts the number of backups in the backupFolder and figure outs if any
@@ -55,7 +55,7 @@ def createBackupName():
 def manageBackupFolder(backupFolder, maxBackupNumber):
 	releventFileList = []
 	#This is a regex that matching the name of the backup folders
-	backupRegex = "worldBackup([0-9][0-9])(0[0-9]|1[0-2])([0-2][0-9]|3[0-1])_([0-1][0-9]|2[0-4])([0-5][0-9])"
+	backupRegex = "world_backup_([0-9][0-9])(0[0-9]|1[0-2])([0-2][0-9]|3[0-1])_([0-1][0-9]|2[0-4])([0-5][0-9])"
 	#The walk function will start at the dir passed in and trace through all of the subdirectories
 	#Only want root's subdiretories so break after it is found
 	for dirpath, dirnames, filenames in os.walk(backupFolder, True):

@@ -9,7 +9,7 @@ from Backup import backupServer
 backupSrc = "/Users/minecraftserver/Desktop/Minecraft/world"	
 backupDest = "/Users/minecraftserver/Desktop/MinecraftBackups/"
 print("Minecraft Backup is in Progress. It takes awhile :(")
-if backupServer(backupSrc,backupDest,15) == True:	#Check if backup occurred
+if backupServer(backupSrc,backupDest,10) == True:	#Check if backup occurred
 	print("A backup was created in the folder: " + backupDest)
 	#Give the user time to see final console output
 	time.sleep(5)
